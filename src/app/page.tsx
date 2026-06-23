@@ -15,67 +15,10 @@ const TABS = [
 ];
 
 export default function Home() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  
   const [activeTab, setActiveTab] = useState("today");
   
   // Progress state (placeholder for now)
   const [progress, setProgress] = useState(12); // e.g. 12%
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) alert(error.message);
-  };
-
-  if (loading) {
-    return <div className="flex items-center justify-center h-full text-[#555]">LOADING...</div>;
-  }
-
-  if (!user) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <form onSubmit={handleLogin} className="flex flex-col gap-4 border border-[#333] p-8 bg-[#111]">
-          <h1 className="text-xl font-bold tracking-widest uppercase text-white mb-4">Stereoheart // Auth</h1>
-          <input 
-            type="email" 
-            placeholder="EMAIL" 
-            className="bg-[#0a0a0a] border border-[#333] text-white px-4 py-2 focus:outline-none focus:border-[#555] placeholder-[#555]"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input 
-            type="password" 
-            placeholder="PASSWORD" 
-            className="bg-[#0a0a0a] border border-[#333] text-white px-4 py-2 focus:outline-none focus:border-[#555] placeholder-[#555]"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit" className="bg-[#222] border border-[#333] hover:bg-[#333] text-white px-4 py-2 transition-colors uppercase tracking-widest text-sm mt-4">
-            Access Terminal
-          </button>
-        </form>
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col h-full">
@@ -91,12 +34,6 @@ export default function Home() {
         <h1 className="text-white font-bold tracking-widest uppercase flex items-center gap-2">
           <span className="text-[#3b82f6]">▶</span> Stereoheart
         </h1>
-        <button 
-          onClick={() => supabase.auth.signOut()}
-          className="text-[#555] hover:text-white transition-colors text-sm uppercase tracking-widest"
-        >
-          Disconnect
-        </button>
       </header>
 
       <div className="flex flex-1 overflow-hidden">
