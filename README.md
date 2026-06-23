@@ -1,6 +1,6 @@
 # stereoheart
 
-it's a next.js app that generates quizzes and sends notifications.
+it's a next.js app that generates quizzes and sends notifications. also tracks my journey to becoming a good programmer (c++, leetcode, systems books).
 
 ## setup
 
